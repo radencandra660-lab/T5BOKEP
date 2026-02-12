@@ -1,6 +1,3 @@
-Buka Fitur Hijab Hapus Fitur Like, Fitur Like Tidak Diperlukan
-Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Terpisah
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -313,12 +310,13 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
 
         .video-stats {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             color: #777;
             font-size: 13px;
             opacity: 0.8;
             transform: translateY(10px);
             transition: all var(--transition-speed);
+            margin-bottom: 15px;
         }
 
         .video-card:hover .video-stats {
@@ -381,6 +379,33 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
         .load-more-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(255, 0, 102, 0.5);
+        }
+
+        /* ===== TAG STYLES ===== */
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.3);
         }
 
         /* ===== COOMING SOON STYLES ===== */
@@ -927,6 +952,9 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                     <button class="modal-btn" onclick="toggleMute()">
                         <i class="fas fa-volume-mute"></i> Mute
                     </button>
+                    <button class="modal-btn" onclick="startAutoDownload()">
+                        <i class="fas fa-download"></i> Download
+                    </button>
                     <button class="modal-btn" onclick="toggleFullscreen()">
                         <i class="fas fa-expand"></i> Full
                     </button>
@@ -1003,10 +1031,10 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             { id: 'hd', name: 'HD', icon: '💎' }
         ];
 
-        // ===== KATEGORI YANG DIKUNCI (COOMING SOON) =====
-        const lockedCategories = ['hijab', 'abg', 'pasutri', 'rumahan'];
+        // ===== KATEGORI YANG DIKUNCI (COOMING SOON) - HIJAB SUDAH DIHAPUS! =====
+        const lockedCategories = ['abg', 'pasutri', 'rumahan']; // Hijab sudah tidak di-lock
 
-        // ===== MAPPING ID KATEGORI KE NAMA UNTUK FILTER =====
+        // ===== MAPPING ID KATEGORI KE NAMA UNTUK TAG =====
         const categoryNames = {
             'indonesia': 'Indonesia',
             'viral': 'Viral',
@@ -1018,7 +1046,7 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             'hd': 'HD'
         };
 
-        // ===== VIDEO DATABASE - DENGAN MULTI KATEGORI LENGKAP! =====
+        // ===== VIDEO DATABASE - TANPA LIKES! =====
         const videoData = [
             {
                 id: 1,
@@ -1028,7 +1056,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770805793887-2172899d-35de-4bf0-9fc7-97a597be30ab.jpg",
                 duration: "07:45",
                 views: "5.3M",
-                likes: "45K",
                 category: ["indonesia", "viral", "hijab", "hd"],
                 date: "05 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1041,7 +1068,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770808754382-d786e013-e656-4d4c-bee0-118d7641a703.webp",
                 duration: "05:54",
                 views: "4.8M",
-                likes: "38K",
                 category: ["indonesia", "viral", "hd", "terbaru"],
                 date: "04 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1054,7 +1080,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770815771012-cb4cead0-8c7c-4234-8ba2-b37614e2570c.webp",
                 duration: "08:03",
                 views: "3.2M",
-                likes: "52K",
                 category: ["indonesia", "viral", "hijab", "hd", "terbaru"],
                 date: "11 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1067,7 +1092,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770825502499-340907ca-a758-44d9-933a-7d5ac9ce3ba7.webp",
                 duration: "07:36",
                 views: "2.1M",
-                likes: "29K",
                 category: ["indonesia", "viral", "abg", "hd"],
                 date: "10 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1080,7 +1104,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770830628848-184c5c56-6cbb-41a7-ab93-62e825a94894.jpg",
                 duration: "02:37",
                 views: "3.7M",
-                likes: "61K",
                 category: ["indonesia", "viral", "pasutri", "rumahan", "terbaru"],
                 date: "09 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul."
@@ -1093,7 +1116,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770831278100-de1aae82-8383-49c7-8560-696e9282e088.jpg",
                 duration: "03:24",
                 views: "1.2M",
-                likes: "22K",
                 category: ["indonesia", "abg", "rumahan", "hd"],
                 date: "08 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul."
@@ -1106,7 +1128,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://picsum.photos/400/250?random=104&grayscale&blur=1",
                 duration: "04:17",
                 views: "4.1M",
-                likes: "77K",
                 category: ["indonesia", "viral", "abg", "hd", "terbaru"],
                 date: "07 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul."
@@ -1119,7 +1140,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://picsum.photos/400/250?random=105&grayscale&blur=1",
                 duration: "12:15",
                 views: "2.8M",
-                likes: "49K",
                 category: ["indonesia", "hijab", "rumahan", "hd"],
                 date: "06 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul."
@@ -1132,7 +1152,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770834109607-478b6450-a634-4a15-9aae-4337075cedc1.jpg",
                 duration: "01:37",
                 views: "1.4M",
-                likes: "37K",
                 category: ["indonesia", "hijab", "viral", "hd"],
                 date: "06 feb 2026",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul."
@@ -1145,7 +1164,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770894388715-d6cce739-2cba-4e0e-9261-1909d5693679.jpg",
                 duration: "04:40",
                 views: "1.3M",
-                likes: "36K",
                 category: ["indonesia", "viral", "hd", "terbaru"],
                 date: "12 des 2025",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1158,7 +1176,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770901938690-a79e6fde-7070-434a-9f12-4019f4b12038.jpg",
                 duration: "04:40",
                 views: "1.2M",
-                likes: "35K",
                 category: ["indonesia", "viral", "hd", "terbaru"],
                 date: "12 des 2025",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1171,7 +1188,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 thumbnail: "https://image2url.com/r2/default/images/1770903077667-d202ea14-adf1-4c0a-bbe0-6b0c2f58b8cc.jpg",
                 duration: "04:40",
                 views: "105K",
-                likes: "35K",
                 category: ["indonesia", "viral", "hd", "terbaru"],
                 date: "12 des 2025",
                 description: "Silahkan Pencet Tombol Bertulisan Full Maka Akan Ketemu Titik 3 Untuk Download Video. Tidak Disarankan Memakai VPN User Bisa Mengakses Situs Ini Bila Tidak Ada Suara Saat Melakukan Play Klik Mute Maka Suara Akan Muncul"
@@ -1199,6 +1215,18 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             setupEventListeners();
         });
 
+        // ===== GENERATE TAG HTML DARI ARRAY KATEGORI =====
+        function generateCategoryTags(categoryArray) {
+            if (!categoryArray || !Array.isArray(categoryArray)) return '';
+            
+            const validCategories = categoryArray.filter(cat => cat !== 'all' && categoryNames[cat]);
+            
+            return validCategories.map(cat => {
+                const name = categoryNames[cat] || cat;
+                return `<span class="tag">${name}</span>`;
+            }).join('');
+        }
+
         // ===== RENDER TOMBOL KATEGORI OTOMATIS =====
         function renderCategoryButtons() {
             const container = document.getElementById('categoryContainer');
@@ -1218,7 +1246,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             const container = document.getElementById('videoGrid');
             container.innerHTML = '';
             
-            // Cari nama kategori dari categoryList
             const category = categoryList.find(cat => cat.id === categoryId);
             const categoryName = category ? category.name : 'Kategori Ini';
             
@@ -1232,8 +1259,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             `;
             
             container.innerHTML = comingSoonHTML;
-            
-            // Sembunyikan tombol Load More
             document.getElementById('loadMoreContainer').classList.add('hidden');
         }
 
@@ -1252,7 +1277,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             currentCategory = categoryId;
             currentPage = 1;
             
-            // Update active class
             document.querySelectorAll('.category-btn').forEach((btn, index) => {
                 if (categoryList[index].id === categoryId) {
                     btn.classList.add('active');
@@ -1261,15 +1285,12 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 }
             });
             
-            // CEK APAKAH KATEGORI DIKUNCI?
             if (lockedCategories.includes(categoryId)) {
-                // Tampilkan COOMING SOON
                 showComingSoon(categoryId);
-                displayedVideos = []; // kosongkan
+                displayedVideos = [];
                 return;
             }
             
-            // Filter video (hanya untuk kategori tidak dikunci)
             if (categoryId === 'all') {
                 displayedVideos = [...videoData];
             } else {
@@ -1278,11 +1299,9 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 );
             }
             
-            // Render ulang
             document.getElementById('videoGrid').innerHTML = '';
             renderVideos(displayedVideos.slice(0, videosPerPage));
             
-            // Tampilkan load more kalau masih ada video
             if (displayedVideos.length > videosPerPage) {
                 toggleLoadMoreButton(true);
             } else {
@@ -1303,7 +1322,7 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             }
         }
 
-        // ===== RENDER VIDEOS - TANPA TAG! =====
+        // ===== RENDER VIDEOS - DENGAN TAG TANPA LIKES =====
         function renderVideos(videos) {
             const container = document.getElementById('videoGrid');
             if (currentPage === 1) container.innerHTML = '';
@@ -1311,6 +1330,8 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             videos.forEach(video => {
                 const videoCard = document.createElement('div');
                 videoCard.className = 'video-card';
+                
+                const categoryTagsHTML = generateCategoryTags(video.category);
                 
                 videoCard.innerHTML = `
                     <div class="video-player">
@@ -1327,8 +1348,10 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                             <span>📺</span> ${video.channel}
                         </div>
                         <div class="video-stats">
-                            <span>👍 ${video.likes}</span>
                             <span>📅 ${video.date}</span>
+                        </div>
+                        <div class="tags">
+                            ${categoryTagsHTML}
                         </div>
                     </div>
                 `;
@@ -1338,7 +1361,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
 
         // ===== LOAD MORE VIDEOS =====
         function loadMoreVideos() {
-            // Cegah load more kalau kategori dikunci
             if (lockedCategories.includes(currentCategory)) {
                 return;
             }
@@ -1349,7 +1371,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             document.getElementById('videoGrid').innerHTML = '';
             renderVideos(videosToShow);
             
-            // Sembunyikan load more kalau udah habis
             if (videosToShow.length >= displayedVideos.length) {
                 toggleLoadMoreButton(false);
             }
@@ -1365,10 +1386,8 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
             currentCategory = categoryId;
             currentPage = 1;
             
-            // Update URL hash (custom link per category)
             window.location.hash = categoryId;
             
-            // Update active class
             document.querySelectorAll('.category-btn').forEach((btn, index) => {
                 if (categoryList[index].id === categoryId) {
                     btn.classList.add('active');
@@ -1377,15 +1396,12 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 }
             });
             
-            // CEK APAKAH KATEGORI DIKUNCI?
             if (lockedCategories.includes(categoryId)) {
-                // Tampilkan COOMING SOON
                 showComingSoon(categoryId);
-                displayedVideos = []; // kosongkan
+                displayedVideos = [];
                 return;
             }
             
-            // Filter video (hanya untuk kategori tidak dikunci)
             if (categoryId === 'all') {
                 displayedVideos = [...videoData];
             } else {
@@ -1394,11 +1410,9 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 );
             }
             
-            // Render ulang
             document.getElementById('videoGrid').innerHTML = '';
             renderVideos(displayedVideos.slice(0, videosPerPage));
             
-            // Tampilkan load more kalau masih ada video
             if (displayedVideos.length > videosPerPage) {
                 toggleLoadMoreButton(true);
             } else {
@@ -1439,7 +1453,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 muteBtn.parentElement.innerHTML = '<i class="fas fa-volume-mute"></i> Mute';
             }
             
-            // Update views (for demo)
             video.views = `${parseFloat(video.views) + 0.1}M`;
         }
 
@@ -1635,7 +1648,6 @@ Tambahkan Fitur Untuk Tag Video, Saat Sudah Ada Tag Maka Video Tersebut Akan Ter
                 if (e.key === 'Escape') closeVideo(); 
             });
 
-            // ===== LISTENER PERUBAHAN HASH =====
             window.addEventListener('hashchange', function() {
                 const hash = window.location.hash.substring(1);
                 if (hash && categoryList.some(cat => cat.id === hash)) {
